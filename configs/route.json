@@ -8,5 +8,10 @@
 	"activeclients" : {
 		"controller" : "system",
 		"method" : "activeUsers"
+	},
+
+	"sendmessage": {
+		"controller" : "messages",
+		"method" : "sendMessage"
 	}
 }

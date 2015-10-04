@@ -2,6 +2,7 @@ Client 	       = require './client'
 WebSocket = new require 'ws'
 Router         = require '../route/router'
 Logger          = require '../utils/logger'
+Room           = require './room'
 fs 	       = require 'fs'
 
 class Server
@@ -19,6 +20,10 @@ class Server
 
 		@logger.info "Сервер запущен на #{host}, порт - #{port}"
 
+		setInterval =>
+		 	do @searchCompanions
+		 , 1000
+
 		@webSocketServer.on 'connection', (ws) =>
 			id = Math.random()
 			client = new Client id, ws
@@ -34,6 +39,13 @@ class Server
 				@logger.info "Получена команда '#{msg}' от #{client.id}"
 				ws.send @router.parseCommand client, msg
 
+	searchCompanions: ->
+		clients = do @clientsInSearch
+		while clients.length > 1
+			new Room(clients[0], clients[1])
+			@logger.info "Соединяю #{clients[0].id} с #{clients[1].id}"
+			clients.splice 0, 2
+
 	getClientByWs: (ws) ->
 		for client in @clients
 			return client if client.ws == ws
@@ -41,6 +53,11 @@ class Server
 
 	activeClients: ->
 		@clients.length
+
+	clientsInSearch: ->
+		results = []
+		results.push client for client in @clients when client.isInSearch()
+		results
 
 	isEmpty: ->
 		@clients.length == 0

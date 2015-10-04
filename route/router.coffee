@@ -1,4 +1,5 @@
 fs = require ('fs')
+utils = require('../utils/utils.coffee')
 
 class Router
 	constructor: (@server) ->
@@ -20,26 +21,21 @@ class Router
 			cmd = JSON.parse(command)
 		catch exception
 			@server.logger.error "Некорректный JSON в команде #{command}"
-			return @answer "Ошибка", "Некорректный JSON в команде #{command}"
+			return Utils.generateAnswer "Ошибка", "Некорректный JSON в команде #{command}"
 		
-		return @answer "Ошибка", "Нет полей type, data" unless cmd.data && cmd.type
+		return Utils.generateAnswer "Ошибка", "Нет полей type, data" unless cmd.data && cmd.type
 
 		try
 			@executeCommand(client, cmd)
 		catch exception
 			@server.logger.error exception.message
-			return @answer "Ошибка", "Неизвестная ошибка на сервере"
+			return Utils.generateAnswer "Ошибка", "Неизвестная ошибка на сервере"
 
 	executeCommand: (client, command) ->
 		route = @config[command.type]
 		return @answer "Ошибка", 'Незвестная команда' if route == undefined
-
-		@answer command.type, @controllers[route.controller][route.method](command.data)
-
-	answer: (type, data) ->
-		JSON.stringify {
-			type: type,
-			data: data
-		}
+		
+		answer = @controllers[route.controller][route.method](client, command.data)
+		@answer command.type, Utils.generateAnswer unless answer == null
 
 module.exports = Router
