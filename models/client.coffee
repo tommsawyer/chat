@@ -1,3 +1,5 @@
+Utils = require('../utils/utils')
+
 class Client
 	constructor: (@id, @ws) ->
 		@room = null
@@ -18,9 +20,10 @@ class Client
 	enterRoom: (room) ->
 		@inSearch = false
 		@room = room
-	exitRoom: ->
-		@inRoom = false
-		@room = null
+		@sendMessage Utils.generateAnswer 'room', 'Соединение с собеседником установлено'
 
+	exitRoom: ->
+		@room.clientExit @ unless @room == null
+		@room = null
 
 module.exports = Client

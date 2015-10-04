@@ -32,6 +32,7 @@ class Server
 			@logger.info "Подключился новый клиент с ID = #{id}"
 
 			ws.on 'close', =>
+				do client.exitRoom
 				@clients.splice @clients.indexOf(client), 1
 				@logger.info "Отсоединился клиент с ID = #{client.id}"
 
