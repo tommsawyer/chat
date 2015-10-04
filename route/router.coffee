@@ -33,8 +33,9 @@ class Router
 
 	executeCommand: (client, command) ->
 		route = @config[command.type]
-		return @answer "Ошибка", 'Незвестная команда' if route == undefined
-		
+		console.log route
+		return  utils.generateAnswer "Ошибка", 'Незвестная команда' if route == undefined
+
 		answer = @controllers[route.controller][route.method](client, command.data)
 		@answer command.type, utils.generateAnswer unless answer == null
 
