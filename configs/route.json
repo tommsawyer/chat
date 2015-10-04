@@ -1,0 +1,12 @@
+{
+	"controllers": {
+		"system":  "./controllers/system",
+		"rooms": "./controllers/rooms",
+		"messages": "./controllers/messages"
+		},
+
+	"activeclients" : {
+		"controller" : "system",
+		"method" : "activeUsers"
+	}
+}
