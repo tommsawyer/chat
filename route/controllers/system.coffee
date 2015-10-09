@@ -2,6 +2,8 @@ class System
 	constructor: (@server) ->
 
 	activeUsers: ->
-		do @server.activeClients
+		@server.clients.map (client) ->
+			return client.id
+
 
 module.exports = System

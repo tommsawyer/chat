@@ -13,6 +13,9 @@ class Logger
 	warn: (message) ->
 		console.log "#{new Date()} --- ПРЕДУПРЕЖДЕНИЕ! #{message.replace('\n', '')}" if @loggerLevel >= 2
 	error: (message) ->
-		console.log "#{new Date()} --- ОШИБКА! #{message.replace('\n', '')}"
+		if message instanceof Error
+			console.log "#{new Date()} --- ОШИБКА! #{message} \n\n #{message.stack}"
+		else
+			console.log "#{new Date()} --- ОШИБКА! #{message.replace('\n', '')}"
 
 module.exports = Logger

@@ -1,22 +1,27 @@
 Utils = require('../utils/utils')
 
 class Room
-	constructor: (@firstCompanion, @secondCompanion) ->
-		@firstCompanion.enterRoom @
-		@secondCompanion.enterRoom @
+	constructor: (@participants) ->
+		@id = do Math.random
+		for client in @participants
+			client.enterRoom @
 
 	sendMessage: (from, msg) ->
-		if from == @firstCompanion
-			@secondCompanion.sendMessage(Utils.generateAnswer 'message', msg)
-			return @secondCompanion
-		else
-			@firstCompanion.sendMessage(Utils.generateAnswer 'message', msg)
-			return @firstCompanion
+		client.sendMessage(Utils.generateAnswer 'message', {"message":msg, "sender":from.id} ) for client in @participants when client != from && client.online
 
-	isBothCompanionsActive: ->
-		@firstCompanion.room == @ && @secondCompanion.room == @
+	showParticipants: ->
+		@participants.map (client) ->
+			{ 
+				id: client.id,
+				isOnline: client.online
+			}
 
 	clientExit: (client) ->
-		@sendMessage(client, 'Соединение с собеседником разорвано').room = null
 
-module.exports = Room
+class PublicRoom extends Room
+	addParticipant: (client) ->
+		@participants.push client
+		client.enterRoom @
+		@sendMessage client, "Подключился ID = #{client.id}"
+
+module.exports = PublicRoom

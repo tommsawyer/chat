@@ -9,6 +9,7 @@ class Server
 	constructor: ->
 		@configs = JSON.parse fs.readFileSync 'configs/server.json'
 		@clients  = []
+		@rooms  = []
 		@logger   = new Logger @configs.loggerLevel
 		@router   = new Router  @
 
@@ -20,10 +21,6 @@ class Server
 
 		@logger.info "Сервер запущен на #{host}, порт - #{port}"
 
-		setInterval =>
-		 	do @searchCompanions
-		 , 1000
-
 		@webSocketServer.on 'connection', (ws) =>
 			id = Math.random()
 			client = new Client id, ws
@@ -32,28 +29,37 @@ class Server
 			@logger.info "Подключился новый клиент с ID = #{id}"
 
 			ws.on 'close', =>
-				do client.exitRoom
-				@clients.splice @clients.indexOf(client), 1
+				do client.setOffline
 				@logger.info "Отсоединился клиент с ID = #{client.id}"
 
 			ws.on 'message', (msg) =>
 				@logger.info "Получена команда '#{msg}' от #{client.id}"
 				ws.send @router.parseCommand client, msg
 
-	searchCompanions: ->
-		clients = do @clientsInSearch
-		while clients.length > 1
-			new Room(clients[0], clients[1])
-			@logger.info "Соединяю #{clients[0].id} с #{clients[1].id}"
-			clients.splice 0, 2
-
 	getClientByWs: (ws) ->
 		for client in @clients
 			return client if client.ws == ws
 		return null
 
+	getClientById: (id) ->
+		for client in @clients
+			return client if client.id == id
+		return null
+
+	getRooms: ->
+		@rooms.map (room) ->
+			room.id
+
+	getRoomByID: (id) ->
+		for room in @rooms
+			return room if room.id == id
+		return null
+
 	activeClients: ->
-		@clients.length
+		cl = []
+
+		for client in @clients
+			cl.push client if client.online
 
 	clientsInSearch: ->
 		results = []

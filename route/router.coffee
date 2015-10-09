@@ -28,15 +28,17 @@ class Router
 		try
 			@executeCommand(client, cmd)
 		catch exception
-			@server.logger.error exception.message
+			@server.logger.error exception
 			return utils.generateAnswer "Ошибка", "Неизвестная ошибка на сервере"
 
 	executeCommand: (client, command) ->
 		route = @config[command.type]
-		console.log route
 		return  utils.generateAnswer "Ошибка", 'Незвестная команда' if route == undefined
 
 		answer = @controllers[route.controller][route.method](client, command.data)
-		@answer command.type, utils.generateAnswer unless answer == null
+		unless answer == null
+			answer = utils.generateAnswer command.type, answer 
+			@server.logger.info "Отправляю юзеру #{client.id} - #{answer}"
+			return answer
 
 module.exports = Router
