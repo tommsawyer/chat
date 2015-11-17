@@ -3,6 +3,7 @@ Utils = require('../utils/utils')
 class Client
 	constructor: (@id, @ws) ->
 		@room = null
+		@name =null
 		@online = true
 
 	sendMessage: (msg) ->
@@ -14,6 +15,12 @@ class Client
 
 	isInRoom: ->
 		not room == null
+
+	setNickname: (nickname) ->
+		@name = nickname
+
+	getNickname: ->
+		@name || @id
 
 	enterRoom: (room) ->
 		@inSearch = false

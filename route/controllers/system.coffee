@@ -3,7 +3,9 @@ class System
 
 	activeUsers: ->
 		@server.clients.map (client) ->
-			return client.id
+			return client.getNickname()
+	changeNickname: (client, data) ->
+		client.setNickname data
 
 
 module.exports = System

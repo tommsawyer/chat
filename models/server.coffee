@@ -48,11 +48,14 @@ class Server
 
 	getRooms: ->
 		@rooms.map (room) ->
-			room.id
+			{
+				id: room.id,
+				name: room.name
+			}
 
 	getRoomByID: (id) ->
 		for room in @rooms
-			return room if room.id == id
+			return room if String(room.id) == id
 		return null
 
 	activeClients: ->

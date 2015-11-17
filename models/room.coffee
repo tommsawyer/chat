@@ -1,13 +1,13 @@
 Utils = require('../utils/utils')
 
 class Room
-	constructor: (@participants) ->
+	constructor: (@participants, @name) ->
 		@id = do Math.random
 		for client in @participants
 			client.enterRoom @
 
 	sendMessage: (from, msg) ->
-		client.sendMessage(Utils.generateAnswer 'message', {"message":msg, "sender":from.id} ) for client in @participants when client != from && client.online
+		client.sendMessage(Utils.generateAnswer 'message', {"message":msg, "sender":from.getNickname()} ) for client in @participants when client.online
 
 	showParticipants: ->
 		@participants.map (client) ->

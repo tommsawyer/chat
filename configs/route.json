@@ -9,6 +9,10 @@
 		"controller" : "system",
 		"method" : "activeUsers"
 	},
+	"changenickname" : {
+		"controller" : "system",
+		"method" : "changeNickname"
+	},
 	"newchat": {
 			"controller": "rooms",
 			"method":"createChat"
