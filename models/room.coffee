@@ -13,6 +13,7 @@ class Room
 		@participants.map (client) ->
 			{ 
 				id: client.id,
+				name: client.getNickname(),
 				isOnline: client.online
 			}
 

@@ -3,7 +3,10 @@ class System
 
 	activeUsers: ->
 		@server.clients.map (client) ->
-			return client.getNickname()
+			return {
+				id: client.id,
+				name: client.getNickname()
+			}
 	changeNickname: (client, data) ->
 		client.setNickname data
 
