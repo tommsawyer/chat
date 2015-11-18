@@ -13,13 +13,17 @@
 		"controller" : "system",
 		"method" : "changeNickname"
 	},
+	"showclientinfo" : {
+		"controller" : "system",
+		"method" : "showClientInfo"
+	},
 	"newchat": {
 			"controller": "rooms",
 			"method":"createChat"
 		},
-	"showparticipants":{
+	"showroominfo":{
 		"controller":"rooms",
-		"method":"showParticipants"
+		"method":"showRoomInfo"
 		},
 	"enterroom":{
 		"controller":"rooms",

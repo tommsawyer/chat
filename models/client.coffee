@@ -14,7 +14,7 @@ class Client
 			@room.sendMessage(@, msg)
 
 	isInRoom: ->
-		not room == null
+		not @room == null
 
 	setNickname: (nickname) ->
 		@name = nickname
@@ -22,8 +22,17 @@ class Client
 	getNickname: ->
 		@name || @id
 
+	getInfo: ->
+		room = @room.id unless @room == null
+		{
+			id: @id,
+			name: @name,
+			room: room
+		}
+
 	enterRoom: (room) ->
-		@inSearch = false
+		if @isInRoom()
+			do @exitRoom
 		@room = room
 		@sendMessage Utils.generateAnswer 'room', "Соединение с комнатой #{room.id} установлено"
 

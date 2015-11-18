@@ -17,7 +17,10 @@ class Rooms
 	getRooms: (client, params) ->
 		do @server.getRooms
 
-	showParticipants: (client, params) ->
-		do client.room.showParticipants unless client.room == null
+	showRoomInfo: (client, params) ->
+		if params.id
+			room = @server.getRoomByID params.id
+			return room.getInfo() unless room == null
+		do client.room.getInfo unless client.room == null
 
 module.exports = Rooms
