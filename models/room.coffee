@@ -20,7 +20,7 @@ class Room
 
 	getHistory: () ->
 		msgPosition = @messages.length - Math.min(@messages.length, 50)
-		@messages.splice msgPosition
+		@messages.slice msgPosition
 
 	getInfo: ->
 		{
