@@ -33,6 +33,10 @@
 		"controller":"rooms",
 		"method":"getRooms"
 		},
+	"gethistory":{
+		"controller":"rooms",
+		"method":"getHistory"
+		},
 	"sendmessage": {
 		"controller" : "messages",
 		"method" : "sendMessage"

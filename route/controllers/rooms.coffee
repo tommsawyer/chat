@@ -17,6 +17,10 @@ class Rooms
 	getRooms: (client, params) ->
 		do @server.getRooms
 
+	getHistory: (client, params) ->
+		if client.room
+			do client.room.getHistory
+
 	showRoomInfo: (client, params) ->
 		if params.id
 			room = @server.getRoomByID params.id

@@ -40,7 +40,6 @@ class PublicRoom extends Room
 	addParticipant: (client) ->
 		@participants.push client
 		client.enterRoom @
-		client.sendMessage Utils.generateAnswer 'history', do @getHistory
 		@sendMessage client, "Подключился ID = #{client.id}"
 
 module.exports = PublicRoom
