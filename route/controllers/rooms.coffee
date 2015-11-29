@@ -12,7 +12,7 @@ class Rooms
 
 	enterRoom: (client, params) ->
 		room = @server.getRoomByID(params.id)
-		room.addParticipant client unless room == null
+		room.addParticipant client if room != null && !room.isClientInRoom client
 
 	getRooms: (client, params) ->
 		do @server.getRooms

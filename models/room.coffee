@@ -7,6 +7,13 @@ class Room
 		for client in @participants
 			client.enterRoom @
 
+	isClientInRoom: (participant) ->
+		for client in @participants
+			if client == participant
+				return true
+
+		return false
+
 	sendMessage: (from, msg) ->
 		timeString = new Date().toTimeString().split(' ')[0] # отрезаем часть с MSK
 		message    = {
